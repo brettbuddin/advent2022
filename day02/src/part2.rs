@@ -1,14 +1,8 @@
 use anyhow::{Context, Result};
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-use std::path::PathBuf;
 
-pub fn run(file: &PathBuf) -> Result<i32> {
-    let file = BufReader::new(File::open(file)?);
-
+pub fn run(data: &str) -> Result<i32> {
     let mut rounds = Vec::new();
-    for line in file.lines() {
-        let line = line?;
+    for line in data.lines() {
         let round: Round = line.split_once(" ").context("no split")?.into();
         rounds.push(round);
     }
