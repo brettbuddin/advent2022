@@ -7,27 +7,23 @@ fn main() -> Result<()> {
     let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let file = dir.join("data/calories.txt");
 
-    phase1(&file)?;
-    phase2(&file)?;
+    println!("Phase 1: {}", phase1(&file)?);
+    println!("Phase 2: {}", phase2(&file)?);
 
     Ok(())
 }
 
-fn phase1(file: &PathBuf) -> Result<()> {
+fn phase1(file: &PathBuf) -> Result<i32> {
     let file = File::open(file)?;
     let elves = elf_calories(&file)?;
-    let max = elves.iter().max().context("no maximum")?;
-    println!("Phase 1: {}", max);
-    Ok(())
+    elves.iter().max().context("no maximum").map(|v| *v)
 }
 
-fn phase2(file: &PathBuf) -> Result<()> {
+fn phase2(file: &PathBuf) -> Result<i32> {
     let file = File::open(file)?;
     let mut elves = elf_calories(&file)?;
     elves.sort();
-    let top3_sum = &elves[elves.len() - 3..].iter().sum::<i32>();
-    println!("Phase 2: {}", top3_sum);
-    Ok(())
+    Ok(elves[elves.len() - 3..].iter().sum::<i32>())
 }
 
 fn elf_calories(file: &File) -> Result<Vec<i32>> {
