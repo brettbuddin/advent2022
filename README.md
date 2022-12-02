@@ -10,13 +10,13 @@ $ cargo new day02  # Create the crate for Day 2.
 $ mkdir day02/data # Create a data directory for input samples.
 ```
 
-Then add the new day to the [`Cargo.toml`](Cargo.toml):
+Add the new day to the [`Cargo.toml`](Cargo.toml):
 
 ```toml
 [workspace]
 members = [
     "day01",
-	"day02", # Day 2!
+    "day02", # Day 2!
 ]
 ```
 
@@ -26,4 +26,10 @@ that day.
 
 ```console
 $ cargo run day01
+```
+
+Within the `main.rs` you can obtain an example data file path like this:
+
+```rust
+let file = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("data/example.txt");
 ```
