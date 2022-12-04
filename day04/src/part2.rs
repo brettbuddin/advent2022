@@ -2,28 +2,23 @@ use anyhow::{Context, Result};
 use std::cmp;
 use std::ops::RangeInclusive;
 
-pub fn run(data: &str) -> Result<i32> {
-    let team: Result<Vec<(RangeInclusive<i32>, RangeInclusive<i32>)>> = data
-        .lines()
-        .map(|line| {
-            let (one, two) = line.split_once(",").context("no comma")?;
-            let one = parse_range(one)?;
-            let two = parse_range(two)?;
-            Ok((one, two))
+pub fn run(data: &str) -> usize {
+    data.lines()
+        .filter_map(|line| {
+            let (one, two) = line.split_once(",")?;
+            let one = parse_range(one).ok()?;
+            let two = parse_range(two).ok()?;
+            Some((one, two))
         })
-        .collect();
-
-    let sum = team?.iter().fold(0, |accum, team| {
-        // Detect the overlap between the ranges
-        let start = cmp::max(team.0.start(), team.1.start());
-        let end = cmp::min(team.0.end(), team.1.end());
-        if start > end {
-            return accum;
-        }
-        accum + 1
-    });
-
-    Ok(sum)
+        .filter_map(|pair| {
+            let start = cmp::max(pair.0.start(), pair.1.start());
+            let end = cmp::min(pair.0.end(), pair.1.end());
+            if start > end {
+                return None; // no overlap
+            }
+            Some(pair)
+        })
+        .count()
 }
 
 fn parse_range(v: &str) -> Result<RangeInclusive<i32>> {
