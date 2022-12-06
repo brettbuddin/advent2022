@@ -36,7 +36,6 @@ pub fn detect(data: &str, size: usize) -> Result<usize> {
 
     'outer: for w in windows {
         let (idx, w) = w;
-        let w = w.to_vec();
         let len = w.len();
 
         for i in 0..len {
