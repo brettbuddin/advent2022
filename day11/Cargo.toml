@@ -1,0 +1,10 @@
+[package]
+name = "day11"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.66"
+lazy_static = "1.4.0"
+regex = "1.7.0"
+rust-embed = "6.4.2"
